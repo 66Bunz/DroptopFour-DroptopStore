@@ -20,22 +20,22 @@ function convertToRawGitHubURL(githubURL) {
 let displayapps;
 
 class Apps {
-	async getDownloads(uuid) {
-		try {
-			const result = await fetch(
-				`https://api.droptopfour.com/v1/downloads/community-apps/${uuid}`
-			);
-			const data = await result.json();
-			if (data.downloads == undefined) {
-				return 0;
-			} else {
-				return data.downloads;
-			}
-		} catch (error) {
-			console.error('Error fetching downloads:', error);
-			return 0; // Default to 0 if there's an error
-		}
-	}
+	// async getDownloads(uuid) {
+	// 	try {
+	// 		const result = await fetch(
+	// 			`https://api.droptopfour.com/v1/downloads/community-apps/${uuid}`
+	// 		);
+	// 		const data = await result.json();
+	// 		if (data.downloads == undefined) {
+	// 			return 0;
+	// 		} else {
+	// 			return data.downloads;
+	// 		}
+	// 	} catch (error) {
+	// 		console.error('Error fetching downloads:', error);
+	// 		return 0; // Default to 0 if there's an error
+	// 	}
+	// }
 
 	async Items() {
 		try {
@@ -61,11 +61,12 @@ class Apps {
 					image_url,
 					hidden,
 					changelog,
+					downloads
 				} = item.app;
 
 				if (item.app.official_link == '') {
 					const readmeExists = false;
-					const downloads = await this.getDownloads(item.app.uuid);
+					// const downloads = await this.getDownloads(item.app.uuid);
 					return {
 						id,
 						uuid,
@@ -93,9 +94,9 @@ class Apps {
 							`${rawBaseURL}/main/README.md`
 						);
 						const readmeExists = response.status === 200;
-						const downloads = await this.getDownloads(
-							item.app.uuid
-						);
+						// const downloads = await this.getDownloads(
+						// 	item.app.uuid
+						// );
 						return {
 							id,
 							uuid,
@@ -115,9 +116,9 @@ class Apps {
 						};
 					} catch (error) {
 						const readmeExists = false;
-						const downloads = await this.getDownloads(
-							item.app.uuid
-						);
+						// const downloads = await this.getDownloads(
+						// 	item.app.uuid
+						// );
 						return {
 							id,
 							uuid,
