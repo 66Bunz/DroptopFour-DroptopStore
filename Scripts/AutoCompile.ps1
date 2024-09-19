@@ -1,6 +1,8 @@
 # AutoCompile.ps1 will run automatically when your app rmskin is generated from the Droptop settings menu.
 # Use this script to make special changes to the application before it is turned into an installable rmskin.
 
+# **May require Set-ExecutionPolicy to be set to RemoteSigned
+
 # Included variables w/ example values
 # 
 # $appname    = Sample_App-Cariboudjan
