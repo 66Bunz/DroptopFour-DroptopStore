@@ -874,6 +874,12 @@ ol li {
 	right: 15px;
 }
 
+.tooltip-share {
+	position: absolute;
+	top: 15px;
+	right: 15px;
+}
+
 .tooltip-share .tooltiptext-share {
 	opacity: 0;
 	visibility: hidden;
@@ -939,64 +945,14 @@ ol li {
 	text-shadow: 2px 2px 6px rgb(17, 13, 13);
 }
 
-.tooltip-apps {
-	position: relative;
-	display: inline-block;
-	border-bottom: 1px dotted rgba(176, 178, 184, 0.5019607843);
-}
-
-.tooltip-downloads {
-	position: relative;
-	display: inline-block;
-	border-bottom: 1px dotted rgba(176, 178, 184, 0.5019607843);
-}
-
-.tooltip-apps .tooltiptext-apps {
-	visibility: hidden;
-	padding: 5px 0;
-	border-radius: 6px;
-	color: #b0b2b8;
-	text-align: center;
-	background-color: #181820;
-	width: 200px;
-	bottom: 100%;
-	left: 50%;
-	margin-left: -100px;
-	position: absolute;
-	z-index: 1;
-}
-
-.tooltip-downloads .tooltiptext-downloads {
-	visibility: hidden;
-	padding: 5px 0;
-	border-radius: 6px;
-	color: #b0b2b8;
-	text-align: center;
-	background-color: #181820;
-	width: 200px;
-	bottom: 100%;
-	left: 50%;
-	margin-left: -100px;
-	position: absolute;
-	z-index: 1;
-}
-
 .theme-card-apps {
 	color: #b0b2b880;
 	text-shadow: 2px 2px 6px rgb(17, 13, 13);
 }
 
-.tooltip-apps:hover .tooltiptext-apps {
-	visibility: visible;
-}
-
 .theme-card-downloads {
 	color: #b0b2b880;
 	text-shadow: 2px 2px 6px rgb(17, 13, 13);
-}
-
-.tooltip-downloads:hover .tooltiptext-downloads {
-	visibility: visible;
 }
 
 .theme-card-buttons {

@@ -20,23 +20,6 @@ function convertToRawGitHubURL(githubURL) {
 let displayapps;
 
 class Apps {
-	// async getDownloads(uuid) {
-	// 	try {
-	// 		const result = await fetch(
-	// 			`https://api.droptopfour.com/v1/downloads/community-apps/${uuid}`
-	// 		);
-	// 		const data = await result.json();
-	// 		if (data.downloads == undefined) {
-	// 			return 0;
-	// 		} else {
-	// 			return data.downloads;
-	// 		}
-	// 	} catch (error) {
-	// 		console.error('Error fetching downloads:', error);
-	// 		return 0; // Default to 0 if there's an error
-	// 	}
-	// }
-
 	async Items() {
 		try {
 			let result = await fetch(
@@ -62,11 +45,10 @@ class Apps {
 					hidden,
 					changelog,
 					downloads,
-				} = item.app;
+				} = item;
 
-				if (item.app.official_link == '') {
+				if (item.official_link == '') {
 					const readmeExists = false;
-					// const downloads = await this.getDownloads(item.app.uuid);
 					return {
 						id,
 						uuid,
@@ -86,7 +68,7 @@ class Apps {
 					};
 				} else {
 					const rawBaseURL = convertToRawGitHubURL(
-						`${item.app.official_link}`
+						`${item.official_link}`
 					);
 
 					try {
@@ -94,9 +76,6 @@ class Apps {
 							`${rawBaseURL}/main/README.md`
 						);
 						const readmeExists = response.status === 200;
-						// const downloads = await this.getDownloads(
-						// 	item.app.uuid
-						// );
 						return {
 							id,
 							uuid,
@@ -116,9 +95,6 @@ class Apps {
 						};
 					} catch (error) {
 						const readmeExists = false;
-						// const downloads = await this.getDownloads(
-						// 	item.app.uuid
-						// );
 						return {
 							id,
 							uuid,
@@ -166,25 +142,22 @@ class DisplayApps {
 					if (item.official_link == '') {
 						result += `
             <div>
-              <div class="app-card" id="${item.id}">
-                <div class="app-card-container">
-				  <div class="tooltip-share">
-					<a class="app-card-share" onclick="copy_to_clipboard('${item.id}')" onmouseout="out_function('${item.id}')"><span class="tooltiptext-share" id="TooltipShare${item.id}">Copy to clipboard</span><img class="app-share-button" src="../icons/share.webp" /></a>
-				</div>
-                  <a><img href="javascript:void(0)" onclick="openImageModal('${item.image_url}', '${item.name}'); return false" class="app-card-image" src="${item.image_url}" alt="${item.name} image"></a>
-                  <h3 class="app-card-name">${item.name}</h3>
-                  <p class="app-card-version">v${item.version}</p>
-                  <p class="app-card-author">Created by <a class="app-card-author-link">${item.author}</a></p>
-                  <p class="app-card-desc">${item.desc}</p>
-				  <div class="tooltip-downloads">
-				  	<p class="app-card-downloads">Downloaded ${item.downloads} times</p>
-					<span class="tooltiptext-downloads">This number is updated once a day</span>
-				  </div>
-                  <div class="app-card-buttons">
-                      <a class="app-card-button bold" href="javascript:void(0)" onclick="downloadApp('${item.uuid}', '${item.direct_download_link}')">Download</a>
-                  </div>
-                </div>  
-              </div>
+            	<div class="app-card" id="${item.id}">
+                	<div class="app-card-container">
+				  		<div class="tooltip-share">
+							<a class="app-card-share" onclick="copy_to_clipboard('${item.id}')" onmouseout="out_function('${item.id}')"><span class="tooltiptext-share" id="TooltipShare${item.id}">Copy to clipboard</span><img class="app-share-button" src="../icons/share.webp" /></a>
+				  		</div>
+                  		<a><img href="javascript:void(0)" onclick="openImageModal('${item.image_url}', '${item.name}'); return false" class="app-card-image" src="${item.image_url}" alt="${item.name} image"></a>
+						<h3 class="app-card-name">${item.name}</h3>
+						<p class="app-card-version">v${item.version}</p>
+						<p class="app-card-author">Created by <a class="app-card-author-link">${item.author}</a></p>
+						<p class="app-card-desc">${item.desc}</p>
+						<p class="app-card-downloads">Downloaded ${item.downloads} times</p>
+						<div class="app-card-buttons">
+							<a class="app-card-button bold" href="javascript:void(0)" onclick="downloadApp('${item.uuid}', '${item.direct_download_link}')">Download</a>
+						</div>
+					</div>  
+              	</div>
             </div>
             `;
 					} else {
@@ -196,24 +169,19 @@ class DisplayApps {
 			<div>
 				<div class="app-card" id="${item.id}">
 					<div class="app-card-container">
-					<div class="tooltip-share">
-					<a class="app-card-share" onclick="copy_to_clipboard('${item.id}')" onmouseout="out_function('${item.id}')"><span class="tooltiptext-share" id="TooltipShare${item.id}">Copy to clipboard</span><img class="app-share-button" src="../icons/share.webp" /></a>
-				</div>
-					<a><img href="javascript:void(0)" onclick="openImageModal('${item.image_url}', '${item.name}'); return false" class="app-card-image" src="${item.image_url}" alt="${item.name} image"></a>
-					<h3 class="app-card-name pointer" href="javascript:void(0)" onclick="openReadmeModal('${baseLink}')">${item.name}</h3>
-					<p class="app-card-version">v${item.version}</p>
-					<p class="app-card-author">Created by <a class="app-card-author-link">${item.author}</a></p>
-					<p class="app-card-desc">${item.desc}</p>
-					<div class="tooltip-downloads">
-				  	<div class="tooltip-downloads">
-				  	<p class="app-card-downloads">Downloaded ${item.downloads} times</p>
-					<span class="tooltiptext-downloads">This number is updated once a day</span>
-				  </div>
-				  </div>
-					<div class="app-card-buttons">
-						<a class="app-card-button bold" href="javascript:void(0)" onclick="downloadApp('${item.uuid}', '${item.direct_download_link}')">Download</a>
-						<a class="app-card-button" href="${item.official_link}" target="_blank">See on Github</a>
-					</div>
+						<div class="tooltip-share">
+							<a class="app-card-share" onclick="copy_to_clipboard('${item.id}')" onmouseout="out_function('${item.id}')"><span class="tooltiptext-share" id="TooltipShare${item.id}">Copy to clipboard</span><img class="app-share-button" src="../icons/share.webp" /></a>
+						</div>
+						<a><img href="javascript:void(0)" onclick="openImageModal('${item.image_url}', '${item.name}'); return false" class="app-card-image" src="${item.image_url}" alt="${item.name} image"></a>
+						<h3 class="app-card-name pointer" href="javascript:void(0)" onclick="openReadmeModal('${baseLink}')">${item.name}</h3>
+						<p class="app-card-version">v${item.version}</p>
+						<p class="app-card-author">Created by <a class="app-card-author-link">${item.author}</a></p>
+						<p class="app-card-desc">${item.desc}</p>
+						<p class="app-card-downloads">Downloaded ${item.downloads} times</p>
+						<div class="app-card-buttons">
+							<a class="app-card-button bold" href="javascript:void(0)" onclick="downloadApp('${item.uuid}', '${item.direct_download_link}')">Download</a>
+							<a class="app-card-button" href="${item.official_link}" target="_blank">See on Github</a>
+						</div>
 					</div>  
 				</div>
 			</div>
@@ -223,22 +191,19 @@ class DisplayApps {
 			<div>
 				<div class="app-card" id="${item.id}">
 					<div class="app-card-container">
-					<div class="tooltip-share">
-					<a class="app-card-share" onclick="copy_to_clipboard('${item.id}')" onmouseout="out_function('${item.id}')"><span class="tooltiptext-share" id="TooltipShare${item.id}">Copy to clipboard</span><img class="app-share-button" src="../icons/share.webp" /></a>
-				</div>
-					<a><img href="javascript:void(0)" onclick="openImageModal('${item.image_url}', '${item.name}'); return false" class="app-card-image" src="${item.image_url}" alt="${item.name} image"></a>
-					<h3 class="app-card-name">${item.name}</h3>
-					<p class="app-card-version">v${item.version}</p>
-					<p class="app-card-author">Created by <a class="app-card-author-link">${item.author}</a></p>
-					<p class="app-card-desc">${item.desc}</p>
-					<div class="tooltip-downloads">
-				  	<p class="app-card-downloads">Downloaded ${item.downloads} times</p>
-					<span class="tooltiptext-downloads">This number is updated once a day</span>
-				  </div>
-					<div class="app-card-buttons">
-						<a class="app-card-button bold" href="javascript:void(0)" onclick="downloadApp('${item.uuid}', '${item.direct_download_link}')">Download</a>
-						<a class="app-card-button" href="${item.official_link}" target="_blank">See on Github</a>
-					</div>
+						<div class="tooltip-share">
+							<a class="app-card-share" onclick="copy_to_clipboard('${item.id}')" onmouseout="out_function('${item.id}')"><span class="tooltiptext-share" id="TooltipShare${item.id}">Copy to clipboard</span><img class="app-share-button" src="../icons/share.webp" /></a>
+						</div>
+						<a><img href="javascript:void(0)" onclick="openImageModal('${item.image_url}', '${item.name}'); return false" class="app-card-image" src="${item.image_url}" alt="${item.name} image"></a>
+						<h3 class="app-card-name">${item.name}</h3>
+						<p class="app-card-version">v${item.version}</p>
+						<p class="app-card-author">Created by <a class="app-card-author-link">${item.author}</a></p>
+						<p class="app-card-desc">${item.desc}</p>
+						<p class="app-card-downloads">Downloaded ${item.downloads} times</p>
+						<div class="app-card-buttons">
+							<a class="app-card-button bold" href="javascript:void(0)" onclick="downloadApp('${item.uuid}', '${item.direct_download_link}')">Download</a>
+							<a class="app-card-button" href="${item.official_link}" target="_blank">See on Github</a>
+						</div>
 					</div>  
 				</div>
 			</div>
@@ -249,25 +214,22 @@ class DisplayApps {
 					if (item.official_link == '') {
 						result += `
             <div>
-              <div class="app-card" id="${item.id}">
-                <div class="app-card-container">
-				<div class="tooltip-share">
-					<a class="app-card-share" onclick="copy_to_clipboard('${item.id}')" onmouseout="out_function('${item.id}')"><span class="tooltiptext-share" id="TooltipShare${item.id}">Copy to clipboard</span><img class="app-share-button" src="../icons/share.webp" /></a>
+				<div class="app-card" id="${item.id}">
+					<div class="app-card-container">
+						<div class="tooltip-share">
+							<a class="app-card-share" onclick="copy_to_clipboard('${item.id}')" onmouseout="out_function('${item.id}')"><span class="tooltiptext-share" id="TooltipShare${item.id}">Copy to clipboard</span><img class="app-share-button" src="../icons/share.webp" /></a>
+						</div>
+						<a><img href="javascript:void(0)" onclick="openImageModal('${item.image_url}', '${item.name}'); return false" class="app-card-image" src="${item.image_url}" alt="${item.name} image"></a>
+						<h3 class="app-card-name">${item.name}</h3>
+						<p class="app-card-version">v${item.version}</p>
+						<p class="app-card-author">Created by <a class="app-card-author-link" href="${item.author_link}">${item.author}</a></p>
+						<p class="app-card-desc">${item.desc}</p>
+						<p class="app-card-downloads">Downloaded ${item.downloads} times</p>
+						<div class="app-card-buttons">
+							<a class="app-card-button bold" href="javascript:void(0)" onclick="downloadApp('${item.uuid}', '${item.direct_download_link}')">Download</a>
+						</div>
+					</div>  
 				</div>
-				<a><img href="javascript:void(0)" onclick="openImageModal('${item.image_url}', '${item.name}'); return false" class="app-card-image" src="${item.image_url}" alt="${item.name} image"></a>
-                  <h3 class="app-card-name">${item.name}</h3>
-                  <p class="app-card-version">v${item.version}</p>
-                  <p class="app-card-author">Created by <a class="app-card-author-link" href="${item.author_link}">${item.author}</a></p>
-                  <p class="app-card-desc">${item.desc}</p>
-				  <div class="tooltip-downloads">
-				  	<p class="app-card-downloads">Downloaded ${item.downloads} times</p>
-					<span class="tooltiptext-downloads">This number is updated once a day</span>
-				  </div>
-                  <div class="app-card-buttons">
-                      <a class="app-card-button bold" href="javascript:void(0)" onclick="downloadApp('${item.uuid}', '${item.direct_download_link}')">Download</a>
-                  </div>
-                </div>  
-              </div>
             </div>
             `;
 					} else {
@@ -277,51 +239,45 @@ class DisplayApps {
 							);
 							result += `
             <div>
-              <div class="app-card" id="${item.id}">
-                <div class="app-card-container">
-				<div class="tooltip-share">
-					<a class="app-card-share" onclick="copy_to_clipboard('${item.id}')" onmouseout="out_function('${item.id}')"><span class="tooltiptext-share" id="TooltipShare${item.id}">Copy to clipboard</span><img class="app-share-button" src="../icons/share.webp" /></a>
+				<div class="app-card" id="${item.id}">
+					<div class="app-card-container">
+						<div class="tooltip-share">
+							<a class="app-card-share" onclick="copy_to_clipboard('${item.id}')" onmouseout="out_function('${item.id}')"><span class="tooltiptext-share" id="TooltipShare${item.id}">Copy to clipboard</span><img class="app-share-button" src="../icons/share.webp" /></a>
+						</div>
+						<a><img href="javascript:void(0)" onclick="openImageModal('${item.image_url}', '${item.name}'); return false" class="app-card-image" src="${item.image_url}" alt="${item.name} image"></a>
+						<h3 class="app-card-name pointer" href="javascript:void(0)" onclick="openReadmeModal('${baseLink}')">${item.name}</h3>
+						<p class="app-card-version">v${item.version}</p>
+						<p class="app-card-author">Created by <a class="app-card-author-link" href="${item.author_link}">${item.author}</a></p>
+						<p class="app-card-desc">${item.desc}</p>
+						<p class="app-card-downloads">Downloaded ${item.downloads} times</p>
+						<div class="app-card-buttons">
+							<a class="app-card-button bold" href="javascript:void(0)" onclick="downloadApp('${item.uuid}', '${item.direct_download_link}')">Download</a>
+							<a class="app-card-button" href="${item.official_link}" target="_blank">See on Github</a>
+						</div>
+					</div>
 				</div>
-				<a><img href="javascript:void(0)" onclick="openImageModal('${item.image_url}', '${item.name}'); return false" class="app-card-image" src="${item.image_url}" alt="${item.name} image"></a>
-                  <h3 class="app-card-name pointer" href="javascript:void(0)" onclick="openReadmeModal('${baseLink}')">${item.name}</h3>
-                  <p class="app-card-version">v${item.version}</p>
-                  <p class="app-card-author">Created by <a class="app-card-author-link" href="${item.author_link}">${item.author}</a></p>
-                  <p class="app-card-desc">${item.desc}</p>
-				  <div class="tooltip-downloads">
-				  	<p class="app-card-downloads">Downloaded ${item.downloads} times</p>
-					<span class="tooltiptext-downloads">This number is updated once a day</span>
-				  </div>
-                  <div class="app-card-buttons">
-                      <a class="app-card-button bold" href="javascript:void(0)" onclick="downloadApp('${item.uuid}', '${item.direct_download_link}')">Download</a>
-                      <a class="app-card-button" href="${item.official_link}" target="_blank">See on Github</a>
-                  </div>
-                </div>  
-              </div>
             </div>
             `;
 						} else {
 							result += `
             <div>
-              <div class="app-card" id="${item.id}">
-                <div class="app-card-container">
-				<div class="tooltip-share">
-					<a class="app-card-share" onclick="copy_to_clipboard('${item.id}')" onmouseout="out_function('${item.id}')"><span class="tooltiptext-share" id="TooltipShare${item.id}">Copy to clipboard</span><img class="app-share-button" src="../icons/share.webp" /></a>
+				<div class="app-card" id="${item.id}">
+					<div class="app-card-container">
+						<div class="tooltip-share">
+							<a class="app-card-share" onclick="copy_to_clipboard('${item.id}')" onmouseout="out_function('${item.id}')"><span class="tooltiptext-share" id="TooltipShare${item.id}">Copy to clipboard</span><img class="app-share-button" src="../icons/share.webp" /></a>
+						</div>
+						<a><img href="javascript:void(0)" onclick="openImageModal('${item.image_url}', '${item.name}'); return false" class="app-card-image" src="${item.image_url}" alt="${item.name} image"></a>
+						<h3 class="app-card-name">${item.name}</h3>
+						<p class="app-card-version">v${item.version}</p>
+						<p class="app-card-author">Created by <a class="app-card-author-link">${item.author}</a></p>
+						<p class="app-card-desc">${item.desc}</p>
+						<p class="app-card-downloads">Downloaded ${item.downloads} times</p>
+						<div class="app-card-buttons">
+							<a class="app-card-button bold" href="javascript:void(0)" onclick="downloadApp('${item.uuid}', '${item.direct_download_link}')">Download</a>
+							<a class="app-card-button" href="${item.official_link}" target="_blank">See on Github</a>
+						</div>
+					</div>  
 				</div>
-				<a><img href="javascript:void(0)" onclick="openImageModal('${item.image_url}', '${item.name}'); return false" class="app-card-image" src="${item.image_url}" alt="${item.name} image"></a>
-                  <h3 class="app-card-name">${item.name}</h3>
-                  <p class="app-card-version">v${item.version}</p>
-                  <p class="app-card-author">Created by <a class="app-card-author-link">${item.author}</a></p>
-                  <p class="app-card-desc">${item.desc}</p>
-				  <div class="tooltip-downloads">
-				  	<p class="app-card-downloads">Downloaded ${item.downloads} times</p>
-					<span class="tooltiptext-downloads">This number is updated once a day</span>
-				  </div>
-                  <div class="app-card-buttons">
-                      <a class="app-card-button bold" href="javascript:void(0)" onclick="downloadApp('${item.uuid}', '${item.direct_download_link}')">Download</a>
-                      <a class="app-card-button" href="${item.official_link}" target="_blank">See on Github</a>
-                  </div>
-                </div>  
-              </div>
             </div>
             `;
 						}
